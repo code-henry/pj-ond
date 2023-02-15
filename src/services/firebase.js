@@ -11,7 +11,13 @@ import {
 } from 'firebase/firestore';
 
 const firebaseConfig = {
-    // TODO: Add your Firebase configuration here
+    apiKey: "AIzaSyC7wxBdduf-8dfBtue9kx9Ri5R0mHPZpMw",
+    authDomain: "react-todo-d6012.firebaseapp.com",
+    projectId: "react-todo-d6012",
+    storageBucket: "react-todo-d6012.appspot.com",
+    messagingSenderId: "71121929887",
+    appId: "1:71121929887:web:4e3e875c72d2c3e4ed44aa",
+    measurementId: "G-3TGN6JL8M9"
 };
 
 const app = initializeApp(firebaseConfig);
