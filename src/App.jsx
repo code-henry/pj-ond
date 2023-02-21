@@ -5,7 +5,7 @@ import './App.css';
 
 function App() {
     const { user } = useAuth();
-
+    console.log(user);
     return (
         <div className="container">
             <h1>💬 Chat Room</h1>
@@ -13,5 +13,7 @@ function App() {
         </div>
     );
 }
+
+
 
 export default App;

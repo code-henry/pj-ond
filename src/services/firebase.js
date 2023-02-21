@@ -9,7 +9,7 @@ import {
     query,
     orderBy,
 } from 'firebase/firestore';
-
+ 
 const firebaseConfig = {
     apiKey: "AIzaSyC7wxBdduf-8dfBtue9kx9Ri5R0mHPZpMw",
     authDomain: "react-todo-d6012.firebaseapp.com",
@@ -24,11 +24,15 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 async function loginWithGoogle() {
-    try {
+    try { 
         const provider = new GoogleAuthProvider();
         const auth = getAuth();
 
-        const { user } = await signInWithPopup(auth, provider);
+        //.thenをつけると何故かエラーになる
+        const { user } = await signInWithPopup(auth, provider)
+        .catch((error)=>{
+            console.log(error.message);
+        });
 
         return { uid: user.uid, displayName: user.displayName };
     } catch (error) {
