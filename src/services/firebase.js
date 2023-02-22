@@ -24,7 +24,7 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 async function loginWithGoogle() {
-    try { 
+    try {
         const provider = new GoogleAuthProvider();
         const auth = getAuth();
 
@@ -45,12 +45,28 @@ async function loginWithGoogle() {
 
 async function sendMessage(roomId, user, text) {
     try {
-        await addDoc(collection(db, 'chat-rooms', roomId, 'messages'), {
+        await addDoc(collection(db, 'chat-rooms', roomId, 'messages')
+        , {
             uid: user.uid,
             displayName: user.displayName,
             text: text.trim(),
             timestamp: serverTimestamp(),
-        });
+        }
+        );
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+async function setChatRooms(roomId, user) {
+    try {
+        await addDoc(collection(db, 'chat-rooms', roomId, 'settings')
+        , {
+            uid: user.uid,
+            displayName: user.displayName,
+            timestamp: serverTimestamp(),
+        }
+        );
     } catch (error) {
         console.error(error);
     }
@@ -73,4 +89,4 @@ function getMessages(roomId, callback) {
     );
 }
 
-export { loginWithGoogle, sendMessage, getMessages };
+export { loginWithGoogle, sendMessage, getMessages, setChatRooms };
