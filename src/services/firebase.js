@@ -7,9 +7,9 @@ import {
     serverTimestamp,
     onSnapshot,
     query,
-    orderBy,
+    orderBy
 } from 'firebase/firestore';
- 
+
 const firebaseConfig = {
     apiKey: "AIzaSyC7wxBdduf-8dfBtue9kx9Ri5R0mHPZpMw",
     authDomain: "react-todo-d6012.firebaseapp.com",
@@ -30,9 +30,9 @@ async function loginWithGoogle() {
 
         //.thenをつけると何故かエラーになる
         const { user } = await signInWithPopup(auth, provider)
-        .catch((error)=>{
-            console.log(error.message);
-        });
+            .catch((error) => {
+                console.log(error.message);
+            });
 
         return { uid: user.uid, displayName: user.displayName };
     } catch (error) {
@@ -45,32 +45,47 @@ async function loginWithGoogle() {
 
 async function sendMessage(roomId, user, text) {
     try {
-        await addDoc(collection(db, 'chat-rooms', roomId, 'messages')
-        , {
-            uid: user.uid,
-            displayName: user.displayName,
-            text: text.trim(),
-            timestamp: serverTimestamp(),
-        }
+        await addDoc(collection(db, 'chat-rooms', createUuid(), 'messages')
+            , {
+                uid: user.uid,
+                displayName: user.displayName,
+                text: text.trim(),
+                timestamp: serverTimestamp(),
+            }
         );
     } catch (error) {
         console.error(error);
     }
 }
 
-async function setChatRooms(roomId, user) {
+async function setChatRooms(user,value) {
     try {
-        await addDoc(collection(db, 'chat-rooms', roomId, 'settings')
-        , {
-            uid: user.uid,
-            displayName: user.displayName,
-            timestamp: serverTimestamp(),
-        }
+        const uuid = createUuid()
+        await addDoc(collection(db, 'chat-rooms', uuid, 'settings')
+            , {
+                founderUid: user.uid,
+                founderDisplayName: value.founderDisplayName,
+                roomName: value.roomName,
+                roomId: uuid,
+                description: value.description,
+                rules: value.rules
+            }
         );
     } catch (error) {
         console.error(error);
     }
 }
+
+//uuidの作成関数
+function createUuid() {
+
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (a) {
+        let r = (new Date().getTime() + Math.random() * 16) % 16 | 0, v = a === 'x' ? r : ((r & 0x3) | 0x8);
+        return v.toString(16);
+    });
+
+}
+
 
 function getMessages(roomId, callback) {
     return onSnapshot(

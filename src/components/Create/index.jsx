@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { useAuth } from '../../hooks/useAuth';
-import { Link, useParams } from 'react-router-dom';
-import { chatRooms } from '../../data/chatRooms';
+import { Link } from 'react-router-dom';
+// import { chatRooms } from '../../data/chatRooms';
+import { setChatRooms } from '../../services/firebase'
 import './styles.css';
 
 function Create() {
@@ -19,8 +20,7 @@ function Create() {
     };
 
     const handleSubmit = (event) => {
-        // sendMessage(roomId, user, value);
-        console.log(value)
+        setChatRooms(user,value)
         setValue({
             founderDisplayName: "",
             roomName:"",
