@@ -30,7 +30,7 @@ function ChatRoom() {
 
     if (!room) {
         // TODO: 404
-        return (<h2>404 err</h2>)
+        return (<h2>roomが見つからなかった404</h2>)
     }
 
     
