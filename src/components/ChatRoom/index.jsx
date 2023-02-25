@@ -37,14 +37,27 @@ function ChatRoom() {
 
     return (
         <>
-            {nameEntered||user.displayName ? <UserNameEntered /> : <UserNameBeforeEntered setNameEntered={setNameEntered} />}
+            {nameEntered||user.displayName ? <UserNameEntered/> : <UserNameBeforeEntered setNameEntered={setNameEntered} />}
         </>
     );
 }
 
 function UserNameEntered() {
+    const { user } = useAuth();
     const params = useParams();
     const room = chatRooms.find((x) => x.id === params.id);
+
+    
+    updateProfile(user,{
+        //photoURLって書いてあるけど今はいってる部屋を表します
+        photoURL: room.id
+    }).then(()=>{
+
+    }).catch((err)=>{
+        console.log(err);
+    })
+
+
     return (
         <>
             <h2>{room.title}</h2>
