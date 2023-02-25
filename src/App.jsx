@@ -18,7 +18,6 @@ function App() {
             console.log(errorCode,errorMessage)
         });
     const { user } = useAuth();
-    console.log(user)
     return (
         <div className="container">
             <h1>💬チャット村💬</h1>
@@ -28,4 +27,4 @@ function App() {
 }
 
 
-export default App;
+export default App; 

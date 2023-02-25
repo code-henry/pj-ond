@@ -8,6 +8,7 @@ function AuthenticatedApp() {
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<Landing />} />
+                <Route path="/*" element={<h2>404</h2>} />
                 <Route path="/create" element={<Create />} />
                 <Route path="/room/:id" element={<ChatRoom />} />
             </Routes>

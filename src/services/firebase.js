@@ -1,4 +1,5 @@
 import { initializeApp } from 'firebase/app';
+import { useState, useEffect } from 'react'
 import { GoogleAuthProvider, signInWithPopup, getAuth } from 'firebase/auth';
 import {
     getFirestore,
@@ -7,8 +8,14 @@ import {
     serverTimestamp,
     onSnapshot,
     query,
-    orderBy
+    orderBy,
+    doc,
+    getDoc,
+    getDocs,
+    setDoc
 } from 'firebase/firestore';
+
+import { chatRooms } from '../data/chatRooms';
 
 const firebaseConfig = {
     apiKey: "AIzaSyC7wxBdduf-8dfBtue9kx9Ri5R0mHPZpMw",
@@ -58,22 +65,48 @@ async function sendMessage(roomId, user, text) {
     }
 }
 
-async function setChatRooms(user,value) {
+async function setChatRooms(user, value) {
     try {
+        const roomRef = collection(db, "chat-rooms");
         const uuid = createUuid()
-        await addDoc(collection(db, 'chat-rooms', uuid, 'settings')
-            , {
-                founderUid: user.uid,
-                founderDisplayName: value.founderDisplayName,
-                roomName: value.roomName,
-                roomId: uuid,
-                description: value.description,
-                rules: value.rules
-            }
-        );
+        await setDoc(doc(roomRef, uuid), {
+            founderUid: user.uid,
+            founderDisplayName: value.founderDisplayName,
+            roomName: value.roomName,
+            roomId: uuid,
+            description: value.description,
+            rules: value.rules
+        });
     } catch (error) {
         console.error(error);
     }
+}
+
+async function GetDocumentsData() {
+    let array = []
+    const querySnapshot = await getDocs(collection(db, "chat-rooms"));
+    querySnapshot.forEach(function (doc) {
+        array.push({
+            id: doc.id,
+            title: doc.data().roomName
+        })
+    });
+    for (var i = 0; i < array.length; i++) {
+        chatRooms[i] = array[i]
+    }
+    return chatRooms
+
+
+
+    // const docRef = doc(db, "cities", "SF");
+    // const docSnap = await getDoc(docRef);
+
+    // if (docSnap.exists()) {
+    //     console.log("Document data:", docSnap.data());
+    // } else {
+    //     // doc.data() will be undefined in this case
+    //     console.log("No such document!");
+    // }
 }
 
 //uuidの作成関数
@@ -104,4 +137,4 @@ function getMessages(roomId, callback) {
     );
 }
 
-export { loginWithGoogle, sendMessage, getMessages, setChatRooms };
+export { loginWithGoogle, sendMessage, getMessages, setChatRooms, GetDocumentsData };

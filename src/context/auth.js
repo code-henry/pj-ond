@@ -23,7 +23,7 @@ export function AuthProvider({ children }) {
         });
 
         return () => {
-            unsubscribed();
+            unsubscribed(); 
         };
     }, []);
 
