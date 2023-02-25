@@ -10,6 +10,7 @@ function ChatRoom() {
     const room = chatRooms.find((x) => x.id === params.id);
     if (!room) {
         // TODO: 404
+        return(<h2>404 err</h2>)
     }
 
     return (

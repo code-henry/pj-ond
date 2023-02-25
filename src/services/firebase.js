@@ -52,7 +52,7 @@ async function loginWithGoogle() {
 
 async function sendMessage(roomId, user, text) {
     try {
-        await addDoc(collection(db, 'chat-rooms', createUuid(), 'messages')
+        await addDoc(collection(db, 'chat-rooms', roomId, 'messages')
             , {
                 uid: user.uid,
                 displayName: user.displayName,
