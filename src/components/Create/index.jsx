@@ -40,7 +40,7 @@ function Create() {
                 <input
                     type="text"
                     name="founderDisplayName"
-                    placeholder="あなた表示名"
+                    placeholder="あなたの表示名"
                     value={value.founderDisplayName}
                     onChange={handleChange}
                     className="message-input"

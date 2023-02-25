@@ -80,6 +80,7 @@ async function setChatRooms(user, value) {
     } catch (error) {
         console.error(error);
     }
+    user.displayName = value.founderDisplayName
 }
 
 async function GetDocumentsData() {

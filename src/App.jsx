@@ -10,18 +10,18 @@ function App() {
     const auth = getAuth();
     signInAnonymously(auth)
         .then(() => {
-            // Signed in..
+　
         })
         .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
-            console.log(errorCode,errorMessage)
+            console.log(errorCode, errorMessage)
         });
     const { user } = useAuth();
     return (
         <div className="container">
             <h1>💬チャット村💬</h1>
-            {userAgreed ? <AuthenticatedApp /> : <UnauthenticatedApp setUserAgreed = {setUserAgreed}/>}
+            {userAgreed ? <AuthenticatedApp /> : <UnauthenticatedApp setUserAgreed={setUserAgreed} />}
         </div>
     );
 }
