@@ -24,6 +24,7 @@ function Create() {
     const navigation = useNavigate();
 
     const handleSubmit = (event) => {
+        event.preventDefault();
         const roomId = setChatRooms(user,value).then((uuid)=>{
             updateProfile(user, {
                 displayName: value.founderDisplayName,
@@ -35,10 +36,9 @@ function Create() {
                     description:"",
                     rules:""
                 });
-                event.preventDefault();
 
                 console.log(uuid)
-                navigation(`/room/${roomId}`)
+                navigation(`/room/${uuid}`)
 
             }).catch((err) => {
                 console.log(err);
