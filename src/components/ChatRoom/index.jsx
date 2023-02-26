@@ -46,7 +46,13 @@ function UserNameEntered() {
     const { user } = useAuth();
     const params = useParams();
     const room = chatRooms.find((x) => x.id === params.id);
+    let isFounder=false
 
+    if(room.founderUid === user.uid){
+        isFounder = true;
+    }
+    console.log(room)
+    console.log(isFounder)
     
     updateProfile(user,{
         //photoURLって書いてあるけど今はいってる部屋を表します
