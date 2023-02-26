@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useAuth } from '../../hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 // import { chatRooms } from '../../data/chatRooms';
 import { setChatRooms } from '../../services/firebase'
@@ -19,8 +20,10 @@ function Create() {
         setValue({ ...value, [event.target.name]: event.target.value });
     };
 
+    const navigation = useNavigate();
+
     const handleSubmit = (event) => {
-        setChatRooms(user,value)
+        const roomId = setChatRooms(user,value)
         setValue({
             founderDisplayName: "",
             roomName:"",
@@ -28,6 +31,7 @@ function Create() {
             rules:""
         });
         event.preventDefault();
+        navigation(`/room/${roomId}`)
     };
 
     return (

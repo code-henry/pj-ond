@@ -1,4 +1,4 @@
-import { Link, useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { chatRooms } from '../../data/chatRooms';
 import { MessageInput } from '../MessageInput';
 import { MessageList } from '../MessageList';
@@ -57,12 +57,24 @@ function UserNameEntered() {
         console.log(err);
     })
 
+    const navigation = useNavigate();
+
+    function leaveRoom(){
+        updateProfile(user,{
+            photoURL: "",
+            displayName: ""
+        }).then(()=>{
+            navigation("/")
+        }).catch((err)=>{
+            console.log(err);
+        })
+    }
 
     return (
         <>
             <h2>{room.title}</h2>
             <div>
-                <Link to="/">⬅️ Back to all rooms</Link>
+                <div onClick={leaveRoom}>⬅️ チャットを出る</div>
             </div>
             <div className="messages-container">
                 <MessageList roomId={room.id} />

@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { useState, useEffect } from 'react'
-import { GoogleAuthProvider, signInWithPopup, getAuth } from 'firebase/auth';
+import { GoogleAuthProvider, signInWithPopup, getAuth,updateProfile } from 'firebase/auth';
 import {
     getFirestore,
     collection,
@@ -65,6 +65,7 @@ async function sendMessage(roomId, user, text) {
     }
 }
 
+// 部屋の作成と同時にfounderの表示名とURLも変えている
 async function setChatRooms(user, value) {
     try {
         const roomRef = collection(db, "chat-rooms");
@@ -77,10 +78,21 @@ async function setChatRooms(user, value) {
             description: value.description,
             rules: value.rules
         });
+
+        updateProfile(user,{
+            displayName:value.founderDisplayName,
+            photoURL: uuid
+        }).then(()=>{
+    
+        }).catch((err)=>{
+            console.log(err);
+        })
+
+        return uuid
     } catch (error) {
         console.error(error);
     }
-    user.displayName = value.founderDisplayName
+
 }
 
 async function GetDocumentsData() {

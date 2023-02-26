@@ -34,7 +34,10 @@ function Message({ message, isOwnMessage }) {
 
     return (
         <li className={['message', isOwnMessage && 'own-message'].join(' ')}>
-            <h4 className="sender">{isOwnMessage ? 'You' : displayName}</h4>
+            <h4 className="sender">
+                {/* {isOwnMessage ? 'You' : displayName} */}
+                {displayName}
+            </h4>
             <div>{text}</div>
         </li>
     );
