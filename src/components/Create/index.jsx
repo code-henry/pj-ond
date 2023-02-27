@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { useAuth } from '../../hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 // import { chatRooms } from '../../data/chatRooms';
+import { updateProfile } from 'firebase/auth';
 import { setChatRooms } from '../../services/firebase'
 import './styles.css';
 
@@ -18,16 +20,32 @@ function Create() {
         //ブラケット演算子を使っている
         setValue({ ...value, [event.target.name]: event.target.value });
     };
+ 
+    const navigation = useNavigate();
 
     const handleSubmit = (event) => {
-        setChatRooms(user,value)
-        setValue({
-            founderDisplayName: "",
-            roomName:"",
-            description:"",
-            rules:""
-        });
         event.preventDefault();
+        const roomId = setChatRooms(user,value).then((uuid)=>{
+            updateProfile(user, {
+                displayName: value.founderDisplayName,
+                photoURL: uuid
+            }).then(() => {
+                setValue({
+                    founderDisplayName: "",
+                    roomName:"",
+                    description:"",
+                    rules:""
+                });
+
+                console.log(uuid)
+                navigation(`/room/${uuid}`)
+
+            }).catch((err) => {
+                console.log(err);
+            })
+        })
+
+
     };
 
     return (
