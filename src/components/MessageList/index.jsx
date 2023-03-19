@@ -2,6 +2,7 @@ import React from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { useMessages } from '../../hooks/useMessages';
 import './styles.css';
+import { useParams } from 'react-router-dom';
 
 function MessageList({ roomId }) {
     const containerRef = React.useRef(null);
@@ -12,7 +13,7 @@ function MessageList({ roomId }) {
         if (containerRef.current) {
             containerRef.current.scrollTop = containerRef.current.scrollHeight;
         }
-    });
+    }); 
 
     return (
         <div className="message-list-container" ref={containerRef}>
@@ -22,6 +23,7 @@ function MessageList({ roomId }) {
                         key={x.id}
                         message={x}
                         isOwnMessage={x.uid === user.uid}
+                        disName={user.displayName}
                     />
                 ))}
             </ul>
@@ -29,14 +31,13 @@ function MessageList({ roomId }) {
     );
 }
 
-function Message({ message, isOwnMessage }) {
+function Message({ message, isOwnMessage, disName }) {
     const { displayName, text } = message;
-
+    const { id } = useParams();
     return (
         <li className={['message', isOwnMessage && 'own-message'].join(' ')}>
             <h4 className="sender">
-                {/* {isOwnMessage ? 'You' : displayName} */}
-                {displayName}
+                {isOwnMessage ? disName : id}
             </h4>
             <div>{text}</div>
         </li>

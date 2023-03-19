@@ -11,6 +11,8 @@ html {
 
     background-color: var(--color-background);
     color: var(--color-white);
+
+    overflow: hidden;
 }
 
 html,
@@ -61,4 +63,31 @@ button {
     flex-direction: column;
     align-items: center;
     gap: 32px;
+}
+
+header {
+    width: 100%;
+    padding: 14px;
+    background-color: #223C85;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+header h1 {
+    text-align: center;
+    font-size: 32px;
+    font-family: 'Amatic SC', cursive;
+    flex: 1;
+    margin: 0;
+}
+
+header .phoneIcon {
+    color: white;
+    width: 20px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 27px;
 }

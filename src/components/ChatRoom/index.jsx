@@ -9,7 +9,7 @@ import './styles.css';
 import { updateProfile } from 'firebase/auth';
 
 function ChatRoom() {
-    
+
     const { user } = useAuth();
     const [nameEntered, setNameEntered] = useState(false);
 
@@ -18,7 +18,7 @@ function ChatRoom() {
     const params = useParams();
 
     useEffect(() => {
-        GetDocumentsData().then(() => {
+        GetDocumentsData(user).then(() => {
             setPending(false)
         })
     }, [])
@@ -33,11 +33,11 @@ function ChatRoom() {
         return (<h2>roomが見つからなかった404</h2>)
     }
 
-    
+
 
     return (
         <>
-            {nameEntered||user.displayName ? <UserNameEntered/> : <UserNameBeforeEntered setNameEntered={setNameEntered} />}
+            {nameEntered || user.displayName ? <UserNameEntered /> : <UserNameBeforeEntered setNameEntered={setNameEntered} />}
         </>
     );
 }
@@ -46,39 +46,17 @@ function UserNameEntered() {
     const { user } = useAuth();
     const params = useParams();
     const room = chatRooms.find((x) => x.id === params.id);
-    let isFounder=false
 
-    if(room.founderUid === user.uid){
-        isFounder = true;
-    }
     console.log(room)
-    console.log(isFounder)
-    
-    updateProfile(user,{
-        //photoURLって書いてあるけど今はいってる部屋を表します
-        photoURL: room.id
-    }).then(()=>{
-
-    }).catch((err)=>{
-        console.log(err);
-    })
-
     const navigation = useNavigate();
 
-    function leaveRoom(){
-        updateProfile(user,{
-            photoURL: "",
-            displayName: ""
-        }).then(()=>{
-            navigation("/")
-        }).catch((err)=>{
-            console.log(err);
-        })
+    function leaveRoom() {
+        navigation("/")
     }
 
     return (
         <>
-            <h2>{room.title}</h2>
+            <h2>{room.name}</h2>
             <div>
                 <div onClick={leaveRoom}>⬅️ チャットを出る</div>
             </div>
@@ -86,7 +64,7 @@ function UserNameEntered() {
                 <MessageList roomId={room.id} />
                 <MessageInput roomId={room.id} />
             </div>
-        </>
+        </> 
     );
 }
 
@@ -109,11 +87,11 @@ function UserNameBeforeEntered(props) {
             // setDisplayName({
             //     founderDisplayName: "",
             // });
-            updateProfile(user,{
+            updateProfile(user, {
                 displayName: displayName
-            }).then(()=>{
+            }).then(() => {
 
-            }).catch((err)=>{
+            }).catch((err) => {
                 console.log(err);
             })
             props.setNameEntered(true);

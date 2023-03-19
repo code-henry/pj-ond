@@ -2,6 +2,7 @@ import React from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { sendMessage } from '../../services/firebase';
 import './styles.css'; 
+import { getChatGPT } from '../chat';
 
 function MessageInput({ roomId }) {
     const { user } = useAuth();
@@ -11,9 +12,11 @@ function MessageInput({ roomId }) {
         setValue(event.target.value);
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        sendMessage(roomId, user, value);
+        sendMessage(roomId, user, value, false); 
+        const response = await getChatGPT();
+        sendMessage(roomId,user,response.title, true)
         setValue('');
     };
 

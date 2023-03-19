@@ -1,10 +1,7 @@
 const chatRooms = [
-    // { id: 'dogs', title: '🐶 Dogs 🐶' },
-    // { id: 'food', title: '🍔 Food 🍔' },
-    // { id: 'general', title: '💬 General 💬' },
-    // { id: 'news', title: '🗞 News 🗞' },
-    // { id: 'music', title: '🎹 Music 🎹' },
-    // { id: 'sports', title: '🏈 Sports 🏈' },
+    // { id: 'mayuko', name: 'まゆ子' },
+    // { id: 'kiriko', name: 'きり子' },
+    // { id: 'momoko', name: 'もも子' }, 
 ];
 
 export { chatRooms }; 

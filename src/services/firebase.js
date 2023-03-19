@@ -14,7 +14,6 @@ import {
     getDocs,
     setDoc
 } from 'firebase/firestore';
-
 import { chatRooms } from '../data/chatRooms';
 
 const firebaseConfig = {
@@ -50,12 +49,11 @@ async function loginWithGoogle() {
     }
 }
 
-async function sendMessage(roomId, user, text) {
+async function sendMessage(roomId, user, text, isAi) { 
     try {
-        await addDoc(collection(db, 'chat-rooms', roomId, 'messages')
+        await addDoc(collection(db, 'ond', user.uid, 'member', roomId, "messages")
             , {
-                uid: user.uid,
-                displayName: user.displayName,
+                uid: isAi? "ai":user.uid,
                 text: text.trim(),
                 timestamp: serverTimestamp(),
             }
@@ -66,38 +64,47 @@ async function sendMessage(roomId, user, text) {
 }
 
 // 部屋の作成と同時にfounderの表示名とURLも変えている
-async function setChatRooms(user, value) {
+async function setChatRooms(user) {
     try {
-        const roomRef = collection(db, "chat-rooms");
-        const uuid = createUuid()
-        await setDoc(doc(roomRef, uuid), {
-            founderUid: user.uid,
-            founderDisplayName: value.founderDisplayName,
-            roomName: value.roomName,
-            roomId: uuid,
-            description: value.description,
-            rules: value.rules
+        const roomRef = collection(db, "ond")
+
+
+        await setDoc(doc(roomRef, user.uid), {
+            userId: user.uid,
+        }).then(() => {
+
+            const member = [
+                { id: 'mayuko', name: 'まゆ子' },
+                { id: 'kiriko', name: 'きり子' },
+                { id: 'momoko', name: 'もも子' }, 
+            ];
+
+            for (let i = 0; i < member.length; i++) {
+
+                const memberRef = doc(collection(doc(db, "ond", user.uid), "member"), member[i].id);
+
+                setDoc(memberRef, {
+                    name: member[i].name,
+                    id: member[i].id
+                })
+
+            }
         })
-        return uuid
 
 
     } catch (error) {
         console.error(error);
     }
-
-
 }
 
-async function GetDocumentsData() {
+async function GetDocumentsData(user) {
+
     let array = []
-    const querySnapshot = await getDocs(collection(db, "chat-rooms"));
+    const querySnapshot = await getDocs(collection(db, "ond", user.uid, "member"));
     querySnapshot.forEach(function (doc) {
         array.push({
-            id: doc.id,
-            title: doc.data().roomName,
-            founderUid: doc.data().founderUid,
-            description: doc.data().description,
-            rules: doc.data().rules
+            id: doc.data().id,
+            name: doc.data().name,
         })
     });
     for (var i = 0; i < array.length; i++) {
@@ -129,10 +136,10 @@ function createUuid() {
 }
 
 
-function getMessages(roomId, callback) {
+function getMessages(roomId, callback, user) {
     return onSnapshot(
         query(
-            collection(db, 'chat-rooms', roomId, 'messages'),
+            collection(db, 'ond', user.uid, 'member', roomId, "messages"),
             orderBy('timestamp', 'asc')
         ),
         (querySnapshot) => {

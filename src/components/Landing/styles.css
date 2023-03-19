@@ -1,7 +1,10 @@
 .chat-room-list {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: column;
+    flex-flow: column;
     gap: 8px;
+    width: 80%;
+    height:300px;
 }
 
 .chat-room-list li {
